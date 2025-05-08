@@ -90,12 +90,12 @@ pipeline {
         }
         */
 
-        stage('Nettoyage K8s') {
+        /*stage('Nettoyage K8s') {
             steps {
                 sh 'microk8s kubectl delete -f k8s/ || true'
             }
         }
-    }
+    }*/
 
     post {
         success {

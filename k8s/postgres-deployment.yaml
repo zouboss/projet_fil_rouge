@@ -3,10 +3,10 @@ kind: Deployment
 metadata:
   name: postgres
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: postgres
-  replicas: 1
   template:
     metadata:
       labels:
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: postgres
-        image: zouboss/projetfilrouge_migrate:latest
+        image: postgres:15
         ports:
         - containerPort: 5432
         env:
@@ -29,7 +29,7 @@ spec:
           mountPath: /var/lib/postgresql/data
       volumes:
       - name: postgres-storage
-        emptyDir: {}  # Remplace par un vrai volume persistant plus tard
+        emptyDir: {}  # Remplace par un volume persistant plus tard (ex: hostPath ou PVC)
 ---
 apiVersion: v1
 kind: Service
@@ -41,4 +41,3 @@ spec:
   ports:
     - port: 5432
       targetPort: 5432
-

@@ -7,7 +7,7 @@ pipeline {
         BACKEND_IMAGE = "${DOCKER_USER}/projetfilrouge_backend"
         FRONTEND_IMAGE = "${DOCKER_USER}/projetfilrouge_frontend"
         MIGRATE_IMAGE = "${DOCKER_USER}/projetfilrouge_migrate"
-        SONAR_HOST_URL = 'https://68f3-41-82-155-229.ngrok-free.app'
+        SONAR_HOST_URL = 'https://2031-41-214-74-161.ngrok-free.app'
         SONAR_BACK_TOKEN = credentials('projet_fil_rouge_cred')
         SONAR_FRONT_TOKEN = credentials('projet_fil_rouge_cred')
     }
@@ -20,21 +20,6 @@ pipeline {
             }
         }
 
-       /* stage('Tests') {
-            steps {
-                sh '''
-                    cd Backend
-                    pip install -r requirements.txt
-                    pytest
-                '''
-                sh '''
-                    cd Frontend
-                    npm install
-                    npm test
-                '''
-            }
-        }
-        */
         stage('Analyse SonarQube Backend') {
             steps {
                 sh '''
@@ -83,6 +68,17 @@ pipeline {
             }
         }
 
+        stage('Déploiement sur Kubernetes') {
+            steps {
+                sh '''
+                    microk8s kubectl apply -f k8s/postgres-deployment.yaml
+                    microk8s kubectl apply -f k8s/backend-deployment.yaml
+                    microk8s kubectl apply -f k8s/frontend-deployment.yaml
+                '''
+            }
+        }
+
+        /*
         stage('Déploiement local avec Docker Compose') {
             steps {
                 sh '''
@@ -92,13 +88,20 @@ pipeline {
                 '''
             }
         }
+        */
+
+        stage('Nettoyage K8s') {
+            steps {
+                sh 'microk8s kubectl delete -f k8s/ || true'
+            }
+        }
     }
 
     post {
         success {
             mail to: 'alassanebenzecoly@gmail.com',
                  subject: "✅ Déploiement local réussi",
-                 body: "L'application a été déployée localement avec succès."
+                 body: "L'application a été déployée avec succès via Kubernetes."
         }
         failure {
             mail to: 'alassanebenzecoly@gmail.com',
@@ -107,3 +110,4 @@ pipeline {
         }
     }
 }
+

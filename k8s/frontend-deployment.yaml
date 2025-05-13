@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: frontend
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: frontend
@@ -14,9 +14,13 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: zouboss/projetfilrouge_frontend:latest
+        image: zouboss/projetfilrouge_frontend:latest  # Ton image Docker Hub
+        imagePullPolicy: Always
         ports:
-        - containerPort: 80
+        - containerPort: 80  # NGINX écoute sur 80 dans le conteneur
+        env:
+        - name: API_URL
+          value: "http://backend-service:8000"  # URL du backend
 ---
 apiVersion: v1
 kind: Service
@@ -28,6 +32,5 @@ spec:
   ports:
     - port: 80
       targetPort: 80
-      nodePort: 30081
-  type: NodePort
-
+      nodePort: 30083  # Optionnel : si tu utilises NodePort
+  type: NodePort  # Pour exposer le frontend publiquement

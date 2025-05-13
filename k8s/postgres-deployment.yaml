@@ -1,12 +1,13 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: postgres
 spec:
+  serviceName: postgres-service
+  replicas: 1
   selector:
     matchLabels:
       app: postgres
-  replicas: 1
   template:
     metadata:
       labels:
@@ -14,22 +15,27 @@ spec:
     spec:
       containers:
       - name: postgres
-        image: zouboss/projetfilrouge_migrate:latest
-        ports:
-        - containerPort: 5432
+        image: postgres:latest  # Version officielle
         env:
         - name: POSTGRES_USER
           value: "postgres"
         - name: POSTGRES_PASSWORD
-          value: "zou123"
+          value: "zou123"  # À remplacer par un Secret en production !
         - name: POSTGRES_DB
           value: "odc_db"
+        ports:
+        - containerPort: 5432  # PostgreSQL écoute sur 5432 par défaut
         volumeMounts:
-        - name: postgres-storage
+        - name: postgres-data
           mountPath: /var/lib/postgresql/data
-      volumes:
-      - name: postgres-storage
-        emptyDir: {}  # Remplace par un vrai volume persistant plus tard
+  volumeClaimTemplates:
+  - metadata:
+      name: postgres-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 5Gi  # Taille ajustable
 ---
 apiVersion: v1
 kind: Service
@@ -39,6 +45,5 @@ spec:
   selector:
     app: postgres
   ports:
-    - port: 5432
-      targetPort: 5432
-
+    - port: 5432  # Service exposé en interne sur 5432
+  type: ClusterIP

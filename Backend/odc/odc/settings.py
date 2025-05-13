@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-x*u4xobocld2xgun42d2)uh0p3y15y-$e!q3f$3-v2b#mfj+gh
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -82,10 +82,10 @@ WSGI_APPLICATION = 'odc.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'odc_db',
-        'USER': 'postgres',
-        'PASSWORD': 'zou123',
-        'HOST': 'db',
+        'NAME': os.getenv('DB_NAME', 'odc_db'),
+        'USER': os.getenv('DB_USER', 'postgres'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'zou123'),
+        'HOST': os.getenv('DB_HOST', 'postgres-service'),
         'PORT': '5432',
     }
 }

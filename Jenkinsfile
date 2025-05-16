@@ -68,7 +68,7 @@ pipeline {
             }
         }
 
-        stage('Déploiement sur Kubernetes') {
+        /*stage('Déploiement sur Kubernetes') {
             steps {
                 sh '''
                     microk8s kubectl apply -f k8s/postgres-deployment.yaml
@@ -77,25 +77,8 @@ pipeline {
                 '''
             }
         }
-
-        /*
-        stage('Déploiement local avec Docker Compose') {
-            steps {
-                sh '''
-                    docker-compose down || true
-                    docker-compose pull
-                    docker-compose up -d --build
-                '''
-            }
-        }
-        */
-
-        stage('Nettoyage K8s') {
-            steps {
-                sh 'microk8s kubectl delete -f k8s/ || true'
-            }
-        }
-    }
+        
+    }*/
 
     post {
         success {

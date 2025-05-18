@@ -4,51 +4,145 @@ variable "kubeconfig_path" {
 
 provider "kubernetes" {
   config_path = var.kubeconfig_path
-  insecure    = true
 }
-
 
 # SERVICES
 resource "kubernetes_manifest" "postgres_service" {
-  manifest = yamldecode(file("${path.module}/k8s/postgres-service.yaml"))
+  manifest = {
+    apiVersion = "v1"
+    kind       = "Service"
+    metadata = {
+      name      = "postgres-service"
+      namespace = "default"
+    }
+    spec = {
+      selector = {
+        app = "postgres"
+      }
+      ports = [
+        {
+          protocol   = "TCP"
+          port       = 5432
+          targetPort = 5432
+        }
+      ]
+    }
+  }
 }
 
 resource "kubernetes_manifest" "backend_service" {
-  manifest = yamldecode(file("${path.module}/k8s/backend-service.yaml"))
+  manifest = {
+    apiVersion = "v1"
+    kind       = "Service"
+    metadata = {
+      name      = "backend-service"
+      namespace = "default"
+    }
+    spec = {
+      selector = {
+        app = "backend"
+      }
+      ports = [
+        {
+          protocol   = "TCP"
+          port       = 8000
+          targetPort = 8000
+        }
+      ]
+    }
+  }
 }
 
 resource "kubernetes_manifest" "frontend_service" {
-  manifest = yamldecode(file("${path.module}/k8s/frontend-service.yaml"))
+  manifest = {
+    apiVersion = "v1"
+    kind       = "Service"
+    metadata = {
+      name      = "frontend-service"
+      namespace = "default"
+    }
+    spec = {
+      selector = {
+        app = "frontend"
+      }
+      ports = [
+        {
+          protocol   = "TCP"
+          port       = 3000
+          targetPort = 3000
+        }
+      ]
+    }
+  }
 }
 
 # DEPLOYMENTS
 resource "kubernetes_manifest" "postgres" {
-  manifest = yamldecode(file("${path.module}/k8s/postgres-statefulset.yaml"))
+  manifest = merge(
+    yamldecode(file("${path.module}/k8s/postgres-statefulset.yaml")),
+    {
+      metadata = merge(
+        yamldecode(file("${path.module}/k8s/postgres-statefulset.yaml")).metadata,
+        { namespace = "default" }
+      )
+    }
+  )
   depends_on = [kubernetes_manifest.postgres_service]
 }
 
 resource "kubernetes_manifest" "backend" {
-  manifest = yamldecode(file("${path.module}/k8s/backend-deployment.yaml"))
+  manifest = merge(
+    yamldecode(file("${path.module}/k8s/backend-deployment.yaml")),
+    {
+      metadata = merge(
+        yamldecode(file("${path.module}/k8s/backend-deployment.yaml")).metadata,
+        { namespace = "default" }
+      )
+    }
+  )
   depends_on = [kubernetes_manifest.backend_service]
 }
 
 resource "kubernetes_manifest" "frontend" {
-  manifest = yamldecode(file("${path.module}/k8s/frontend-deployment.yaml"))
+  manifest = merge(
+    yamldecode(file("${path.module}/k8s/frontend-deployment.yaml")),
+    {
+      metadata = merge(
+        yamldecode(file("${path.module}/k8s/frontend-deployment.yaml")).metadata,
+        { namespace = "default" }
+      )
+    }
+  )
   depends_on = [kubernetes_manifest.frontend_service]
 }
 
 # JOB DE MIGRATION
 resource "kubernetes_manifest" "migrate_job" {
-  manifest = yamldecode(file("${path.module}/k8s/migrate-job.yaml"))
+  manifest = merge(
+    yamldecode(file("${path.module}/k8s/migrate-job.yaml")),
+    {
+      metadata = merge(
+        yamldecode(file("${path.module}/k8s/migrate-job.yaml")).metadata,
+        { namespace = "default" }
+      )
+    }
+  )
   depends_on = [kubernetes_manifest.postgres]
 }
 
 # INGRESS
 resource "kubernetes_manifest" "ingress" {
-  manifest = yamldecode(file("${path.module}/k8s/ingress.yaml"))
+  manifest = merge(
+    yamldecode(file("${path.module}/k8s/ingress.yaml")),
+    {
+      metadata = merge(
+        yamldecode(file("${path.module}/k8s/ingress.yaml")).metadata,
+        { namespace = "default" }
+      )
+    }
+  )
   depends_on = [
     kubernetes_manifest.frontend_service,
     kubernetes_manifest.backend_service
   ]
 }
-

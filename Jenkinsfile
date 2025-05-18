@@ -7,7 +7,7 @@ pipeline {
         BACKEND_IMAGE = "${DOCKER_USER}/projetfilrouge_backend"
         FRONTEND_IMAGE = "${DOCKER_USER}/projetfilrouge_frontend"
         MIGRATE_IMAGE = "${DOCKER_USER}/projetfilrouge_migrate"
-        SONAR_HOST_URL = 'https://5325-41-83-2-218.ngrok-free.app'
+        SONAR_HOST_URL = 'https://7dfe-41-83-2-218.ngrok-free.app'
         SONAR_BACK_TOKEN = credentials('projet_fil_rouge_cred')
         SONAR_FRONT_TOKEN = credentials('projet_fil_rouge_cred')
     }
@@ -15,7 +15,7 @@ pipeline {
     stages {
         stage('Cloner le dépôt') {
             steps {
-                git branch: 'main',
+                git branch: 'terraform',
                     url: 'https://github.com/zouboss/projet_fil_rouge.git'
             }
         }
@@ -107,4 +107,3 @@ pipeline {
         }
     }
 }
-

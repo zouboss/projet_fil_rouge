@@ -21,16 +21,3 @@ spec:
         env:
         - name: API_URL
           value: "http://backend-service:8000"  # URL du backend
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: frontend-service
-spec:
-  selector:
-    app: frontend
-  ports:
-    - port: 80
-      targetPort: 80
-      nodePort: 30083  # Optionnel : si tu utilises NodePort
-  type: NodePort  # Pour exposer le frontend publiquement

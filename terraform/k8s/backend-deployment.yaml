@@ -31,17 +31,4 @@ spec:
           value: "zou123"
         - name: DB_NAME
           value: "odc_db"
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: backend-service
-spec:
-  selector:
-    app: backend
-  ports:
-    - port: 8000
-      targetPort: 8000
-      nodePort: 30081
-  type: NodePort
 

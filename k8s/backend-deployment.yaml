@@ -12,19 +12,23 @@ spec:
       labels:
         app: backend
     spec:
+      initContainers:
+      - name: wait-for-postgres
+        image: busybox
+        command: ['sh', '-c', 'until nc -z postgres-service 5432; do echo "Waiting for postgres..."; sleep 2; done']
       containers:
       - name: backend
-        image: zouboss/projetfilrouge_backend:latest  # Ton image Docker Hub
-        command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]  # Identique à docker-compose
+        image: zouboss/projetfilrouge_backend:latest
+        command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
         ports:
         - containerPort: 8000
         env:
         - name: DB_HOST
-          value: "postgres-service"  # Nom du service PostgreSQL
+          value: "postgres-service"
         - name: DB_USER
           value: "postgres"
         - name: DB_PASSWORD
-          value: "zou123"  # À sécuriser avec un Secret !
+          value: "zou123"
         - name: DB_NAME
           value: "odc_db"
 ---
@@ -38,6 +42,6 @@ spec:
   ports:
     - port: 8000
       targetPort: 8000
-      nodePort: 30081  # Tu choisis un port entre 30000 et 32767
+      nodePort: 30081
   type: NodePort
 

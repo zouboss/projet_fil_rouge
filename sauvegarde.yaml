@@ -1,0 +1,2027 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      cni.projectcalico.org/containerID: dac3eaa878e9559770b1fbea7368fb3ffcfa6854ef7583f23b230da54f47ef15
+      cni.projectcalico.org/podIP: 10.1.65.116/32
+      cni.projectcalico.org/podIPs: 10.1.65.116/32
+      kubectl.kubernetes.io/restartedAt: "2025-05-13T21:37:01Z"
+    creationTimestamp: "2025-05-13T22:03:56Z"
+    generateName: backend-7477c7d889-
+    labels:
+      app: backend
+      pod-template-hash: 7477c7d889
+    name: backend-7477c7d889-wfspp
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: backend-7477c7d889
+      uid: 6c5eb0cb-e051-43e9-bd40-942cc8677a3d
+    resourceVersion: "160924"
+    uid: 2fd2b644-1e7f-4a1b-a031-1901b99ba341
+  spec:
+    containers:
+    - command:
+      - python
+      - manage.py
+      - runserver
+      - 0.0.0.0:8000
+      env:
+      - name: DB_HOST
+        value: postgres-service
+      - name: DB_USER
+        value: postgres
+      - name: DB_PASSWORD
+        value: zou123
+      - name: DB_NAME
+        value: odc_db
+      image: zouboss/projetfilrouge_backend:latest
+      imagePullPolicy: Always
+      name: backend
+      ports:
+      - containerPort: 8000
+        protocol: TCP
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-d2j99
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    initContainers:
+    - command:
+      - sh
+      - -c
+      - until nc -z postgres-service 5432; do echo "Waiting for postgres..."; sleep
+        2; done
+      image: busybox
+      imagePullPolicy: Always
+      name: wait-for-postgres
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-d2j99
+        readOnly: true
+    nodeName: zou
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: kube-api-access-d2j99
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2025-05-17T14:51:04Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2025-05-13T22:04:01Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2025-05-17T14:52:25Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2025-05-17T14:52:25Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2025-05-13T22:03:56Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://6190d6086fad3149563416dd1a370ece6c99edfa9b0758f7da599c88971a8f01
+      image: docker.io/zouboss/projetfilrouge_backend:latest
+      imageID: docker.io/zouboss/projetfilrouge_backend@sha256:2a9fb96e9fdaa61a0e4ee5cab7522615744088f9d969d80c57a49e57f6c5ba4d
+      lastState:
+        terminated:
+          containerID: containerd://da0651e1058171c91258722da48fbafe73c4ae9ee8ca520b44c87e22af162291
+          exitCode: 255
+          finishedAt: "2025-05-17T14:50:39Z"
+          reason: Unknown
+          startedAt: "2025-05-16T22:18:55Z"
+      name: backend
+      ready: true
+      restartCount: 6
+      started: true
+      state:
+        running:
+          startedAt: "2025-05-17T14:52:25Z"
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-d2j99
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 192.168.1.17
+    hostIPs:
+    - ip: 192.168.1.17
+    initContainerStatuses:
+    - containerID: containerd://57bd776b8e3bfa884479c3c40a7c8c106f6cd309eb96f0c26971032bfcb6df47
+      image: docker.io/library/busybox:latest
+      imageID: docker.io/library/busybox@sha256:37f7b378a29ceb4c551b1b5582e27747b855bbfaa73fa11914fe0df028dc581f
+      lastState: {}
+      name: wait-for-postgres
+      ready: true
+      restartCount: 6
+      started: false
+      state:
+        terminated:
+          containerID: containerd://57bd776b8e3bfa884479c3c40a7c8c106f6cd309eb96f0c26971032bfcb6df47
+          exitCode: 0
+          finishedAt: "2025-05-17T14:52:09Z"
+          reason: Completed
+          startedAt: "2025-05-17T14:51:03Z"
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-d2j99
+        readOnly: true
+        recursiveReadOnly: Disabled
+    phase: Running
+    podIP: 10.1.65.116
+    podIPs:
+    - ip: 10.1.65.116
+    qosClass: BestEffort
+    startTime: "2025-05-13T22:03:56Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      cni.projectcalico.org/containerID: d79ce05e2217c445caf4f01d5e768f6980624c38e8a1f4beab464cad5ba648f6
+      cni.projectcalico.org/podIP: 10.1.65.89/32
+      cni.projectcalico.org/podIPs: 10.1.65.89/32
+      kubectl.kubernetes.io/restartedAt: "2025-05-13T21:37:01Z"
+    creationTimestamp: "2025-05-13T22:03:49Z"
+    generateName: backend-7477c7d889-
+    labels:
+      app: backend
+      pod-template-hash: 7477c7d889
+    name: backend-7477c7d889-zpqpr
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: backend-7477c7d889
+      uid: 6c5eb0cb-e051-43e9-bd40-942cc8677a3d
+    resourceVersion: "160891"
+    uid: 9654fa16-f536-4ef5-9323-fb91d0909a1e
+  spec:
+    containers:
+    - command:
+      - python
+      - manage.py
+      - runserver
+      - 0.0.0.0:8000
+      env:
+      - name: DB_HOST
+        value: postgres-service
+      - name: DB_USER
+        value: postgres
+      - name: DB_PASSWORD
+        value: zou123
+      - name: DB_NAME
+        value: odc_db
+      image: zouboss/projetfilrouge_backend:latest
+      imagePullPolicy: Always
+      name: backend
+      ports:
+      - containerPort: 8000
+        protocol: TCP
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-zdm45
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    initContainers:
+    - command:
+      - sh
+      - -c
+      - until nc -z postgres-service 5432; do echo "Waiting for postgres..."; sleep
+        2; done
+      image: busybox
+      imagePullPolicy: Always
+      name: wait-for-postgres
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-zdm45
+        readOnly: true
+    nodeName: zou
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: kube-api-access-zdm45
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2025-05-17T14:51:11Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2025-05-13T22:03:53Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2025-05-17T14:52:15Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2025-05-17T14:52:15Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2025-05-13T22:03:49Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://f2e05ecfc9cc6d7b8817d2a963fdd1fca41e473fe8fa1b4a5af0e44071b1ff4d
+      image: docker.io/zouboss/projetfilrouge_backend:latest
+      imageID: docker.io/zouboss/projetfilrouge_backend@sha256:2a9fb96e9fdaa61a0e4ee5cab7522615744088f9d969d80c57a49e57f6c5ba4d
+      lastState:
+        terminated:
+          containerID: containerd://099121ba760aeaebcd704c70256132c7197365f06872da06351216ff67b36205
+          exitCode: 255
+          finishedAt: "2025-05-17T14:50:39Z"
+          reason: Unknown
+          startedAt: "2025-05-16T22:19:15Z"
+      name: backend
+      ready: true
+      restartCount: 6
+      started: true
+      state:
+        running:
+          startedAt: "2025-05-17T14:52:15Z"
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-zdm45
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 192.168.1.17
+    hostIPs:
+    - ip: 192.168.1.17
+    initContainerStatuses:
+    - containerID: containerd://544bbd7ae51f4e0c750fd9bf844bfa61892443d1d1d744e3eb39516da360136a
+      image: docker.io/library/busybox:latest
+      imageID: docker.io/library/busybox@sha256:37f7b378a29ceb4c551b1b5582e27747b855bbfaa73fa11914fe0df028dc581f
+      lastState: {}
+      name: wait-for-postgres
+      ready: true
+      restartCount: 6
+      started: false
+      state:
+        terminated:
+          containerID: containerd://544bbd7ae51f4e0c750fd9bf844bfa61892443d1d1d744e3eb39516da360136a
+          exitCode: 0
+          finishedAt: "2025-05-17T14:52:13Z"
+          reason: Completed
+          startedAt: "2025-05-17T14:51:11Z"
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-zdm45
+        readOnly: true
+        recursiveReadOnly: Disabled
+    phase: Running
+    podIP: 10.1.65.89
+    podIPs:
+    - ip: 10.1.65.89
+    qosClass: BestEffort
+    startTime: "2025-05-13T22:03:49Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      cni.projectcalico.org/containerID: d5cc9bed3b5d62923e1644e883eae24dddd950e43f60c4252a182c03e2923172
+      cni.projectcalico.org/podIP: 10.1.65.94/32
+      cni.projectcalico.org/podIPs: 10.1.65.94/32
+      kubectl.kubernetes.io/restartedAt: "2025-05-13T13:56:46Z"
+    creationTimestamp: "2025-05-13T13:56:47Z"
+    generateName: frontend-69b5bdf8ff-
+    labels:
+      app: frontend
+      pod-template-hash: 69b5bdf8ff
+    name: frontend-69b5bdf8ff-strn2
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: frontend-69b5bdf8ff
+      uid: e268b495-ad61-4d83-acc7-d4930ec89269
+    resourceVersion: "160720"
+    uid: 000b3549-5937-46e0-9f13-d19a1decadeb
+  spec:
+    containers:
+    - env:
+      - name: API_URL
+        value: http://backend-service:8000
+      image: zouboss/projetfilrouge_frontend:latest
+      imagePullPolicy: Always
+      name: frontend
+      ports:
+      - containerPort: 80
+        protocol: TCP
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-qvwzk
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: zou
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: kube-api-access-qvwzk
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2025-05-17T14:51:05Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2025-05-13T13:56:49Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2025-05-17T14:51:05Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2025-05-17T14:51:05Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2025-05-13T13:56:48Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://490227f32000cbc06d6df0a88c46eeedfca8135d13badb57d7d2f4b628ffe7ef
+      image: docker.io/zouboss/projetfilrouge_frontend:latest
+      imageID: docker.io/zouboss/projetfilrouge_frontend@sha256:fad5c29e4e45ca2c9c95efad5d59299a6896b90bb013c92fef2c878882f46110
+      lastState:
+        terminated:
+          containerID: containerd://e03b080c7b0927fdbf95f3a502b62f5b9f4fd1276245a9322572d23dcc7cd0af
+          exitCode: 255
+          finishedAt: "2025-05-17T14:50:39Z"
+          reason: Unknown
+          startedAt: "2025-05-16T22:17:39Z"
+      name: frontend
+      ready: true
+      restartCount: 7
+      started: true
+      state:
+        running:
+          startedAt: "2025-05-17T14:51:04Z"
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-qvwzk
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 192.168.1.17
+    hostIPs:
+    - ip: 192.168.1.17
+    phase: Running
+    podIP: 10.1.65.94
+    podIPs:
+    - ip: 10.1.65.94
+    qosClass: BestEffort
+    startTime: "2025-05-13T13:56:49Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      cni.projectcalico.org/containerID: ff3f72cae6ac029fab5727b96f64863c523ab5a6ba003e78e728dcfcb4095f95
+      cni.projectcalico.org/podIP: 10.1.65.93/32
+      cni.projectcalico.org/podIPs: 10.1.65.93/32
+      kubectl.kubernetes.io/restartedAt: "2025-05-13T13:56:46Z"
+    creationTimestamp: "2025-05-13T13:57:04Z"
+    generateName: frontend-69b5bdf8ff-
+    labels:
+      app: frontend
+      pod-template-hash: 69b5bdf8ff
+    name: frontend-69b5bdf8ff-whbpv
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: frontend-69b5bdf8ff
+      uid: e268b495-ad61-4d83-acc7-d4930ec89269
+    resourceVersion: "160749"
+    uid: 70d4ff74-3abb-42cc-a371-7d741283a090
+  spec:
+    containers:
+    - env:
+      - name: API_URL
+        value: http://backend-service:8000
+      image: zouboss/projetfilrouge_frontend:latest
+      imagePullPolicy: Always
+      name: frontend
+      ports:
+      - containerPort: 80
+        protocol: TCP
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-zx6c4
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: zou
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: kube-api-access-zx6c4
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2025-05-17T14:51:22Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2025-05-13T13:57:04Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2025-05-17T14:51:22Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2025-05-17T14:51:22Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2025-05-13T13:57:04Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://38648d8c845254526ad3e18b5406ee2e9fff6ad08e5c80d6a98deddac816b4f5
+      image: docker.io/zouboss/projetfilrouge_frontend:latest
+      imageID: docker.io/zouboss/projetfilrouge_frontend@sha256:fad5c29e4e45ca2c9c95efad5d59299a6896b90bb013c92fef2c878882f46110
+      lastState:
+        terminated:
+          containerID: containerd://e3832170219c42f8a2e06e50d14934f52f8aedc66908be1bf4a460d14dfc6ba6
+          exitCode: 255
+          finishedAt: "2025-05-17T14:50:39Z"
+          reason: Unknown
+          startedAt: "2025-05-16T22:17:49Z"
+      name: frontend
+      ready: true
+      restartCount: 7
+      started: true
+      state:
+        running:
+          startedAt: "2025-05-17T14:51:22Z"
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-zx6c4
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 192.168.1.17
+    hostIPs:
+    - ip: 192.168.1.17
+    phase: Running
+    podIP: 10.1.65.93
+    podIPs:
+    - ip: 10.1.65.93
+    qosClass: BestEffort
+    startTime: "2025-05-13T13:57:04Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      cni.projectcalico.org/containerID: eab24bff150b93e323292d48a01443ed744d4737a0357ab87b5de0997e561a30
+      cni.projectcalico.org/podIP: ""
+      cni.projectcalico.org/podIPs: ""
+    creationTimestamp: "2025-05-11T18:29:49Z"
+    generateName: migrate-
+    labels:
+      batch.kubernetes.io/controller-uid: 0308cf9d-4dbb-475d-bedf-7fa50fc51d6b
+      batch.kubernetes.io/job-name: migrate
+      controller-uid: 0308cf9d-4dbb-475d-bedf-7fa50fc51d6b
+      job-name: migrate
+    name: migrate-28n2c
+    namespace: default
+    ownerReferences:
+    - apiVersion: batch/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Job
+      name: migrate
+      uid: 0308cf9d-4dbb-475d-bedf-7fa50fc51d6b
+    resourceVersion: "148254"
+    uid: 9216ac56-4e59-4bdc-906c-88f254c66372
+  spec:
+    containers:
+    - command:
+      - python
+      - manage.py
+      - migrate
+      env:
+      - name: DB_HOST
+        value: postgres-service
+      - name: DB_USER
+        value: postgres
+      - name: DB_PASSWORD
+        value: zou123
+      - name: DB_NAME
+        value: odc_db
+      image: zouboss/projetfilrouge_migrate:latest
+      imagePullPolicy: Always
+      name: migrate
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-wfhz7
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: zou
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Never
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: kube-api-access-wfhz7
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2025-05-11T18:29:55Z"
+      status: "False"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2025-05-11T18:29:49Z"
+      reason: PodCompleted
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2025-05-11T18:29:53Z"
+      reason: PodCompleted
+      status: "False"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2025-05-11T18:29:53Z"
+      reason: PodCompleted
+      status: "False"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2025-05-11T18:29:49Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://51a90715d4b20ba602517c10a89b77ea0193b5c548ff568a044e93c8627e4d5f
+      image: docker.io/zouboss/projetfilrouge_migrate:latest
+      imageID: docker.io/zouboss/projetfilrouge_migrate@sha256:668c6063bd5b5e86410f5801b828bd655da7e9afdb31c15413f9ade6af66438a
+      lastState: {}
+      name: migrate
+      ready: false
+      restartCount: 0
+      started: false
+      state:
+        terminated:
+          containerID: containerd://51a90715d4b20ba602517c10a89b77ea0193b5c548ff568a044e93c8627e4d5f
+          exitCode: 0
+          finishedAt: "2025-05-11T18:29:53Z"
+          reason: Completed
+          startedAt: "2025-05-11T18:29:51Z"
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-wfhz7
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 192.168.1.17
+    hostIPs:
+    - ip: 192.168.1.17
+    phase: Succeeded
+    qosClass: BestEffort
+    startTime: "2025-05-11T18:29:49Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      cni.projectcalico.org/containerID: f7b0f6423e8c23bfc2b2b4fcc908ff8d08b2dabfd1f659ea741f32df070084d4
+      cni.projectcalico.org/podIP: 10.1.65.99/32
+      cni.projectcalico.org/podIPs: 10.1.65.99/32
+    creationTimestamp: "2025-05-11T02:51:54Z"
+    generateName: postgres-
+    labels:
+      app: postgres
+      apps.kubernetes.io/pod-index: "0"
+      controller-revision-hash: postgres-984d9bb6b
+      statefulset.kubernetes.io/pod-name: postgres-0
+    name: postgres-0
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: StatefulSet
+      name: postgres
+      uid: 582cbacc-6a3e-486f-9881-9011bac2eaba
+    resourceVersion: "160719"
+    uid: 873e75a6-6cf5-4b13-9072-097b2516849b
+  spec:
+    containers:
+    - env:
+      - name: POSTGRES_USER
+        value: postgres
+      - name: POSTGRES_PASSWORD
+        value: zou123
+      - name: POSTGRES_DB
+        value: odc_db
+      image: postgres:latest
+      imagePullPolicy: Always
+      name: postgres
+      ports:
+      - containerPort: 5432
+        protocol: TCP
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/lib/postgresql/data
+        name: postgres-data
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-vgg4v
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    hostname: postgres-0
+    nodeName: zou
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    subdomain: postgres-service
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: postgres-data
+      persistentVolumeClaim:
+        claimName: postgres-data-postgres-0
+    - name: kube-api-access-vgg4v
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2025-05-17T14:51:05Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2025-05-11T03:01:30Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2025-05-17T14:51:05Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2025-05-17T14:51:05Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2025-05-11T03:01:30Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://e68ff9dcfca65ef289befdd9bb9da2696d7e63200b5f6cba810523930f89265e
+      image: docker.io/library/postgres:latest
+      imageID: docker.io/library/postgres@sha256:864831322bf2520e7d03d899b01b542de6de9ece6fe29c89f19dc5e1d5568ccf
+      lastState:
+        terminated:
+          containerID: containerd://30e631a70a5dc6f26b07449ef574656428f96ed7b0c6d26e6bb968c0738bcb77
+          exitCode: 255
+          finishedAt: "2025-05-17T14:50:39Z"
+          reason: Unknown
+          startedAt: "2025-05-16T22:17:49Z"
+      name: postgres
+      ready: true
+      restartCount: 12
+      started: true
+      state:
+        running:
+          startedAt: "2025-05-17T14:51:04Z"
+      volumeMounts:
+      - mountPath: /var/lib/postgresql/data
+        name: postgres-data
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-vgg4v
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 192.168.1.17
+    hostIPs:
+    - ip: 192.168.1.17
+    phase: Running
+    podIP: 10.1.65.99
+    podIPs:
+    - ip: 10.1.65.99
+    qosClass: BestEffort
+    startTime: "2025-05-11T03:01:30Z"
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"backend-service","namespace":"default"},"spec":{"ports":[{"nodePort":30081,"port":8000,"targetPort":8000}],"selector":{"app":"backend"},"type":"NodePort"}}
+    creationTimestamp: "2025-05-11T18:33:57Z"
+    name: backend-service
+    namespace: default
+    resourceVersion: "4303"
+    uid: 898c5015-5ef9-4d50-b1cf-1bf95923459e
+  spec:
+    clusterIP: 10.152.183.234
+    clusterIPs:
+    - 10.152.183.234
+    externalTrafficPolicy: Cluster
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - nodePort: 30081
+      port: 8000
+      protocol: TCP
+      targetPort: 8000
+    selector:
+      app: backend
+    sessionAffinity: None
+    type: NodePort
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"frontend-service","namespace":"default"},"spec":{"ports":[{"nodePort":30083,"port":80,"targetPort":80}],"selector":{"app":"frontend"},"type":"NodePort"}}
+    creationTimestamp: "2025-05-11T18:36:34Z"
+    name: frontend-service
+    namespace: default
+    resourceVersion: "4752"
+    uid: 247e49dd-a07e-43a9-9ef9-7cb80d229107
+  spec:
+    clusterIP: 10.152.183.18
+    clusterIPs:
+    - 10.152.183.18
+    externalTrafficPolicy: Cluster
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - nodePort: 30083
+      port: 80
+      protocol: TCP
+      targetPort: 80
+    selector:
+      app: frontend
+    sessionAffinity: None
+    type: NodePort
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-05-11T02:48:26Z"
+    labels:
+      component: apiserver
+      provider: kubernetes
+    name: kubernetes
+    namespace: default
+    resourceVersion: "70"
+    uid: ed282a79-fd20-4fdc-bfc4-19a7d8bb49ae
+  spec:
+    clusterIP: 10.152.183.1
+    clusterIPs:
+    - 10.152.183.1
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: https
+      port: 443
+      protocol: TCP
+      targetPort: 16443
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"postgres-service","namespace":"default"},"spec":{"ports":[{"port":5432}],"selector":{"app":"postgres"},"type":"ClusterIP"}}
+    creationTimestamp: "2025-05-11T02:51:54Z"
+    name: postgres-service
+    namespace: default
+    resourceVersion: "545"
+    uid: bcc9a66b-d2c8-407b-9e5f-352b7a6f2313
+  spec:
+    clusterIP: 10.152.183.55
+    clusterIPs:
+    - 10.152.183.55
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 5432
+      protocol: TCP
+      targetPort: 5432
+    selector:
+      app: postgres
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "4"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"name":"backend","namespace":"default"},"spec":{"replicas":2,"selector":{"matchLabels":{"app":"backend"}},"template":{"metadata":{"labels":{"app":"backend"}},"spec":{"containers":[{"command":["python","manage.py","runserver","0.0.0.0:8000"],"env":[{"name":"DB_HOST","value":"postgres-service"},{"name":"DB_USER","value":"postgres"},{"name":"DB_PASSWORD","value":"zou123"},{"name":"DB_NAME","value":"odc_db"}],"image":"zouboss/projetfilrouge_backend:latest","name":"backend","ports":[{"containerPort":8000}]}],"initContainers":[{"command":["sh","-c","until nc -z postgres-service 5432; do echo \"Waiting for postgres...\"; sleep 2; done"],"image":"busybox","name":"wait-for-postgres"}]}}}}
+    creationTimestamp: "2025-05-11T18:33:57Z"
+    generation: 4
+    name: backend
+    namespace: default
+    resourceVersion: "160928"
+    uid: 57168bfc-d252-4d78-9d0e-a41edb552cff
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 2
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: backend
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          kubectl.kubernetes.io/restartedAt: "2025-05-13T21:37:01Z"
+        creationTimestamp: null
+        labels:
+          app: backend
+      spec:
+        containers:
+        - command:
+          - python
+          - manage.py
+          - runserver
+          - 0.0.0.0:8000
+          env:
+          - name: DB_HOST
+            value: postgres-service
+          - name: DB_USER
+            value: postgres
+          - name: DB_PASSWORD
+            value: zou123
+          - name: DB_NAME
+            value: odc_db
+          image: zouboss/projetfilrouge_backend:latest
+          imagePullPolicy: Always
+          name: backend
+          ports:
+          - containerPort: 8000
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        initContainers:
+        - command:
+          - sh
+          - -c
+          - until nc -z postgres-service 5432; do echo "Waiting for postgres...";
+            sleep 2; done
+          image: busybox
+          imagePullPolicy: Always
+          name: wait-for-postgres
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 2
+    conditions:
+    - lastTransitionTime: "2025-05-11T18:33:57Z"
+      lastUpdateTime: "2025-05-13T22:04:03Z"
+      message: ReplicaSet "backend-7477c7d889" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2025-05-17T14:52:25Z"
+      lastUpdateTime: "2025-05-17T14:52:25Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 4
+    readyReplicas: 2
+    replicas: 2
+    updatedReplicas: 2
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "6"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"name":"frontend","namespace":"default"},"spec":{"replicas":2,"selector":{"matchLabels":{"app":"frontend"}},"template":{"metadata":{"labels":{"app":"frontend"}},"spec":{"containers":[{"env":[{"name":"API_URL","value":"http://backend-service:8000"}],"image":"zouboss/projetfilrouge_frontend:latest","imagePullPolicy":"Always","name":"frontend","ports":[{"containerPort":80}]}]}}}}
+    creationTimestamp: "2025-05-11T18:36:34Z"
+    generation: 6
+    name: frontend
+    namespace: default
+    resourceVersion: "66697"
+    uid: 401db3b4-3b55-4cc1-ace9-cca41abbbe68
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 2
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: frontend
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          kubectl.kubernetes.io/restartedAt: "2025-05-13T13:56:46Z"
+        creationTimestamp: null
+        labels:
+          app: frontend
+      spec:
+        containers:
+        - env:
+          - name: API_URL
+            value: http://backend-service:8000
+          image: zouboss/projetfilrouge_frontend:latest
+          imagePullPolicy: Always
+          name: frontend
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 2
+    conditions:
+    - lastTransitionTime: "2025-05-11T18:36:50Z"
+      lastUpdateTime: "2025-05-11T18:36:50Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2025-05-12T12:30:44Z"
+      lastUpdateTime: "2025-05-13T13:57:07Z"
+      message: ReplicaSet "frontend-69b5bdf8ff" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 6
+    readyReplicas: 2
+    replicas: 2
+    updatedReplicas: 2
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "2"
+      deployment.kubernetes.io/max-replicas: "3"
+      deployment.kubernetes.io/revision: "1"
+    creationTimestamp: "2025-05-11T18:33:57Z"
+    generation: 3
+    labels:
+      app: backend
+      pod-template-hash: 56589485c5
+    name: backend-56589485c5
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: backend
+      uid: 57168bfc-d252-4d78-9d0e-a41edb552cff
+    resourceVersion: "64877"
+    uid: 0abdb3e0-4f77-4b74-90e9-f2ebb6f04376
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: backend
+        pod-template-hash: 56589485c5
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: backend
+          pod-template-hash: 56589485c5
+      spec:
+        containers:
+        - command:
+          - python
+          - manage.py
+          - runserver
+          - 0.0.0.0:8000
+          env:
+          - name: DB_HOST
+            value: postgres-service
+          - name: DB_USER
+            value: postgres
+          - name: DB_PASSWORD
+            value: zou123
+          - name: DB_NAME
+            value: odc_db
+          image: zouboss/projetfilrouge_backend:latest
+          imagePullPolicy: Always
+          name: backend
+          ports:
+          - containerPort: 8000
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    observedGeneration: 3
+    replicas: 0
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "2"
+      deployment.kubernetes.io/max-replicas: "3"
+      deployment.kubernetes.io/revision: "3"
+    creationTimestamp: "2025-05-13T21:37:01Z"
+    generation: 4
+    labels:
+      app: backend
+      pod-template-hash: 6599dfb47d
+    name: backend-6599dfb47d
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: backend
+      uid: 57168bfc-d252-4d78-9d0e-a41edb552cff
+    resourceVersion: "78512"
+    uid: 64d864cf-f023-4e73-a31a-efa32220b517
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: backend
+        pod-template-hash: 6599dfb47d
+    template:
+      metadata:
+        annotations:
+          kubectl.kubernetes.io/restartedAt: "2025-05-13T21:37:01Z"
+        creationTimestamp: null
+        labels:
+          app: backend
+          pod-template-hash: 6599dfb47d
+      spec:
+        containers:
+        - command:
+          - python
+          - manage.py
+          - runserver
+          - 0.0.0.0:8000
+          env:
+          - name: DB_HOST
+            value: postgres-service
+          - name: DB_USER
+            value: postgres
+          - name: DB_PASSWORD
+            value: zou123
+          - name: DB_NAME
+            value: odc_db
+          image: zouboss/projetfilrouge_backend:latest
+          imagePullPolicy: Always
+          name: backend
+          ports:
+          - containerPort: 8000
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    observedGeneration: 4
+    replicas: 0
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "2"
+      deployment.kubernetes.io/max-replicas: "3"
+      deployment.kubernetes.io/revision: "2"
+    creationTimestamp: "2025-05-13T13:45:41Z"
+    generation: 4
+    labels:
+      app: backend
+      pod-template-hash: 689c48c468
+    name: backend-689c48c468
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: backend
+      uid: 57168bfc-d252-4d78-9d0e-a41edb552cff
+    resourceVersion: "75768"
+    uid: bd90852c-f6ce-4889-a07c-76df14a57481
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: backend
+        pod-template-hash: 689c48c468
+    template:
+      metadata:
+        annotations:
+          kubectl.kubernetes.io/restartedAt: "2025-05-13T13:45:41Z"
+        creationTimestamp: null
+        labels:
+          app: backend
+          pod-template-hash: 689c48c468
+      spec:
+        containers:
+        - command:
+          - python
+          - manage.py
+          - runserver
+          - 0.0.0.0:8000
+          env:
+          - name: DB_HOST
+            value: postgres-service
+          - name: DB_USER
+            value: postgres
+          - name: DB_PASSWORD
+            value: zou123
+          - name: DB_NAME
+            value: odc_db
+          image: zouboss/projetfilrouge_backend:latest
+          imagePullPolicy: Always
+          name: backend
+          ports:
+          - containerPort: 8000
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    observedGeneration: 4
+    replicas: 0
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "2"
+      deployment.kubernetes.io/max-replicas: "3"
+      deployment.kubernetes.io/revision: "4"
+    creationTimestamp: "2025-05-13T22:03:49Z"
+    generation: 2
+    labels:
+      app: backend
+      pod-template-hash: 7477c7d889
+    name: backend-7477c7d889
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: backend
+      uid: 57168bfc-d252-4d78-9d0e-a41edb552cff
+    resourceVersion: "160927"
+    uid: 6c5eb0cb-e051-43e9-bd40-942cc8677a3d
+  spec:
+    replicas: 2
+    selector:
+      matchLabels:
+        app: backend
+        pod-template-hash: 7477c7d889
+    template:
+      metadata:
+        annotations:
+          kubectl.kubernetes.io/restartedAt: "2025-05-13T21:37:01Z"
+        creationTimestamp: null
+        labels:
+          app: backend
+          pod-template-hash: 7477c7d889
+      spec:
+        containers:
+        - command:
+          - python
+          - manage.py
+          - runserver
+          - 0.0.0.0:8000
+          env:
+          - name: DB_HOST
+            value: postgres-service
+          - name: DB_USER
+            value: postgres
+          - name: DB_PASSWORD
+            value: zou123
+          - name: DB_NAME
+            value: odc_db
+          image: zouboss/projetfilrouge_backend:latest
+          imagePullPolicy: Always
+          name: backend
+          ports:
+          - containerPort: 8000
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        initContainers:
+        - command:
+          - sh
+          - -c
+          - until nc -z postgres-service 5432; do echo "Waiting for postgres...";
+            sleep 2; done
+          image: busybox
+          imagePullPolicy: Always
+          name: wait-for-postgres
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 2
+    fullyLabeledReplicas: 2
+    observedGeneration: 2
+    readyReplicas: 2
+    replicas: 2
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "2"
+      deployment.kubernetes.io/max-replicas: "3"
+      deployment.kubernetes.io/revision: "6"
+    creationTimestamp: "2025-05-13T13:56:47Z"
+    generation: 2
+    labels:
+      app: frontend
+      pod-template-hash: 69b5bdf8ff
+    name: frontend-69b5bdf8ff
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: frontend
+      uid: 401db3b4-3b55-4cc1-ace9-cca41abbbe68
+    resourceVersion: "66686"
+    uid: e268b495-ad61-4d83-acc7-d4930ec89269
+  spec:
+    replicas: 2
+    selector:
+      matchLabels:
+        app: frontend
+        pod-template-hash: 69b5bdf8ff
+    template:
+      metadata:
+        annotations:
+          kubectl.kubernetes.io/restartedAt: "2025-05-13T13:56:46Z"
+        creationTimestamp: null
+        labels:
+          app: frontend
+          pod-template-hash: 69b5bdf8ff
+      spec:
+        containers:
+        - env:
+          - name: API_URL
+            value: http://backend-service:8000
+          image: zouboss/projetfilrouge_frontend:latest
+          imagePullPolicy: Always
+          name: frontend
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 2
+    fullyLabeledReplicas: 2
+    observedGeneration: 2
+    readyReplicas: 2
+    replicas: 2
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "2"
+      deployment.kubernetes.io/max-replicas: "3"
+      deployment.kubernetes.io/revision: "5"
+    creationTimestamp: "2025-05-13T11:07:31Z"
+    generation: 4
+    labels:
+      app: frontend
+      pod-template-hash: 748d77f7c7
+    name: frontend-748d77f7c7
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: frontend
+      uid: 401db3b4-3b55-4cc1-ace9-cca41abbbe68
+    resourceVersion: "66696"
+    uid: 2cf9e643-b7cb-4ff7-811a-39de0d02a257
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: frontend
+        pod-template-hash: 748d77f7c7
+    template:
+      metadata:
+        annotations:
+          kubectl.kubernetes.io/restartedAt: "2025-05-13T11:07:31Z"
+        creationTimestamp: null
+        labels:
+          app: frontend
+          pod-template-hash: 748d77f7c7
+      spec:
+        containers:
+        - env:
+          - name: API_URL
+            value: http://backend-service:8000
+          image: zouboss/projetfilrouge_frontend:latest
+          imagePullPolicy: Always
+          name: frontend
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    observedGeneration: 4
+    replicas: 0
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "2"
+      deployment.kubernetes.io/max-replicas: "3"
+      deployment.kubernetes.io/revision: "4"
+    creationTimestamp: "2025-05-13T11:03:29Z"
+    generation: 4
+    labels:
+      app: frontend
+      pod-template-hash: 7f98668b88
+    name: frontend-7f98668b88
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: frontend
+      uid: 401db3b4-3b55-4cc1-ace9-cca41abbbe68
+    resourceVersion: "42161"
+    uid: ae03e7e2-d0c6-4c16-8345-164e3088e219
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: frontend
+        pod-template-hash: 7f98668b88
+    template:
+      metadata:
+        annotations:
+          kubectl.kubernetes.io/restartedAt: "2025-05-13T11:03:29Z"
+        creationTimestamp: null
+        labels:
+          app: frontend
+          pod-template-hash: 7f98668b88
+      spec:
+        containers:
+        - env:
+          - name: API_URL
+            value: http://backend-service:8000
+          image: zouboss/projetfilrouge_frontend:latest
+          imagePullPolicy: Always
+          name: frontend
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    observedGeneration: 4
+    replicas: 0
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "2"
+      deployment.kubernetes.io/max-replicas: "3"
+      deployment.kubernetes.io/revision: "2"
+    creationTimestamp: "2025-05-12T12:30:44Z"
+    generation: 4
+    labels:
+      app: frontend
+      pod-template-hash: 847499fc99
+    name: frontend-847499fc99
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: frontend
+      uid: 401db3b4-3b55-4cc1-ace9-cca41abbbe68
+    resourceVersion: "38330"
+    uid: c9114277-c416-4e70-9f30-7bc595a6f393
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: frontend
+        pod-template-hash: 847499fc99
+    template:
+      metadata:
+        annotations:
+          kubectl.kubernetes.io/restartedAt: "2025-05-12T12:30:44Z"
+        creationTimestamp: null
+        labels:
+          app: frontend
+          pod-template-hash: 847499fc99
+      spec:
+        containers:
+        - env:
+          - name: API_URL
+            value: http://backend-service:8000
+          image: zouboss/projetfilrouge_frontend:latest
+          imagePullPolicy: Always
+          name: frontend
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    observedGeneration: 4
+    replicas: 0
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "2"
+      deployment.kubernetes.io/max-replicas: "3"
+      deployment.kubernetes.io/revision: "3"
+    creationTimestamp: "2025-05-13T09:55:45Z"
+    generation: 4
+    labels:
+      app: frontend
+      pod-template-hash: 8657db8df8
+    name: frontend-8657db8df8
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: frontend
+      uid: 401db3b4-3b55-4cc1-ace9-cca41abbbe68
+    resourceVersion: "41541"
+    uid: 88eafff5-2d39-4146-bf71-2ccc57991434
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: frontend
+        pod-template-hash: 8657db8df8
+    template:
+      metadata:
+        annotations:
+          kubectl.kubernetes.io/restartedAt: "2025-05-13T09:55:45Z"
+        creationTimestamp: null
+        labels:
+          app: frontend
+          pod-template-hash: 8657db8df8
+      spec:
+        containers:
+        - env:
+          - name: API_URL
+            value: http://backend-service:8000
+          image: zouboss/projetfilrouge_frontend:latest
+          imagePullPolicy: Always
+          name: frontend
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    observedGeneration: 4
+    replicas: 0
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "2"
+      deployment.kubernetes.io/max-replicas: "3"
+      deployment.kubernetes.io/revision: "1"
+    creationTimestamp: "2025-05-11T18:36:34Z"
+    generation: 3
+    labels:
+      app: frontend
+      pod-template-hash: cb66b47bc
+    name: frontend-cb66b47bc
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: frontend
+      uid: 401db3b4-3b55-4cc1-ace9-cca41abbbe68
+    resourceVersion: "22355"
+    uid: 4b979977-ea8c-4c9b-a870-a663eafd94cb
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: frontend
+        pod-template-hash: cb66b47bc
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: frontend
+          pod-template-hash: cb66b47bc
+      spec:
+        containers:
+        - env:
+          - name: API_URL
+            value: http://backend-service:8000
+          image: zouboss/projetfilrouge_frontend:latest
+          imagePullPolicy: Always
+          name: frontend
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    observedGeneration: 3
+    replicas: 0
+- apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"StatefulSet","metadata":{"annotations":{},"name":"postgres","namespace":"default"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"postgres"}},"serviceName":"postgres-service","template":{"metadata":{"labels":{"app":"postgres"}},"spec":{"containers":[{"env":[{"name":"POSTGRES_USER","value":"postgres"},{"name":"POSTGRES_PASSWORD","value":"zou123"},{"name":"POSTGRES_DB","value":"odc_db"}],"image":"postgres:latest","name":"postgres","ports":[{"containerPort":5432}],"volumeMounts":[{"mountPath":"/var/lib/postgresql/data","name":"postgres-data"}]}]}},"volumeClaimTemplates":[{"metadata":{"name":"postgres-data"},"spec":{"accessModes":["ReadWriteOnce"],"resources":{"requests":{"storage":"5Gi"}}}}]}}
+    creationTimestamp: "2025-05-11T02:51:54Z"
+    generation: 1
+    name: postgres
+    namespace: default
+    resourceVersion: "1921"
+    uid: 582cbacc-6a3e-486f-9881-9011bac2eaba
+  spec:
+    persistentVolumeClaimRetentionPolicy:
+      whenDeleted: Retain
+      whenScaled: Retain
+    podManagementPolicy: OrderedReady
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: postgres
+    serviceName: postgres-service
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: postgres
+      spec:
+        containers:
+        - env:
+          - name: POSTGRES_USER
+            value: postgres
+          - name: POSTGRES_PASSWORD
+            value: zou123
+          - name: POSTGRES_DB
+            value: odc_db
+          image: postgres:latest
+          imagePullPolicy: Always
+          name: postgres
+          ports:
+          - containerPort: 5432
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /var/lib/postgresql/data
+            name: postgres-data
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+    updateStrategy:
+      rollingUpdate:
+        partition: 0
+      type: RollingUpdate
+    volumeClaimTemplates:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        creationTimestamp: null
+        name: postgres-data
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 5Gi
+        volumeMode: Filesystem
+      status:
+        phase: Pending
+  status:
+    availableReplicas: 1
+    collisionCount: 0
+    currentReplicas: 1
+    currentRevision: postgres-984d9bb6b
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updateRevision: postgres-984d9bb6b
+    updatedReplicas: 1
+- apiVersion: batch/v1
+  kind: Job
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"batch/v1","kind":"Job","metadata":{"annotations":{},"name":"migrate","namespace":"default"},"spec":{"template":{"spec":{"containers":[{"command":["python","manage.py","migrate"],"env":[{"name":"DB_HOST","value":"postgres-service"},{"name":"DB_USER","value":"postgres"},{"name":"DB_PASSWORD","value":"zou123"},{"name":"DB_NAME","value":"odc_db"}],"image":"zouboss/projetfilrouge_migrate:latest","name":"migrate"}],"restartPolicy":"Never"}}}}
+    creationTimestamp: "2025-05-11T03:05:26Z"
+    generation: 1
+    labels:
+      batch.kubernetes.io/controller-uid: 0308cf9d-4dbb-475d-bedf-7fa50fc51d6b
+      batch.kubernetes.io/job-name: migrate
+      controller-uid: 0308cf9d-4dbb-475d-bedf-7fa50fc51d6b
+      job-name: migrate
+    name: migrate
+    namespace: default
+    resourceVersion: "3734"
+    uid: 0308cf9d-4dbb-475d-bedf-7fa50fc51d6b
+  spec:
+    backoffLimit: 6
+    completionMode: NonIndexed
+    completions: 1
+    manualSelector: false
+    parallelism: 1
+    podReplacementPolicy: TerminatingOrFailed
+    selector:
+      matchLabels:
+        batch.kubernetes.io/controller-uid: 0308cf9d-4dbb-475d-bedf-7fa50fc51d6b
+    suspend: false
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          batch.kubernetes.io/controller-uid: 0308cf9d-4dbb-475d-bedf-7fa50fc51d6b
+          batch.kubernetes.io/job-name: migrate
+          controller-uid: 0308cf9d-4dbb-475d-bedf-7fa50fc51d6b
+          job-name: migrate
+      spec:
+        containers:
+        - command:
+          - python
+          - manage.py
+          - migrate
+          env:
+          - name: DB_HOST
+            value: postgres-service
+          - name: DB_USER
+            value: postgres
+          - name: DB_PASSWORD
+            value: zou123
+          - name: DB_NAME
+            value: odc_db
+          image: zouboss/projetfilrouge_migrate:latest
+          imagePullPolicy: Always
+          name: migrate
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Never
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    completionTime: "2025-05-11T18:29:55Z"
+    conditions:
+    - lastProbeTime: "2025-05-11T18:29:55Z"
+      lastTransitionTime: "2025-05-11T18:29:55Z"
+      message: Reached expected number of succeeded pods
+      reason: CompletionsReached
+      status: "True"
+      type: SuccessCriteriaMet
+    - lastProbeTime: "2025-05-11T18:29:55Z"
+      lastTransitionTime: "2025-05-11T18:29:55Z"
+      message: Reached expected number of succeeded pods
+      reason: CompletionsReached
+      status: "True"
+      type: Complete
+    failed: 2
+    ready: 0
+    startTime: "2025-05-11T03:05:26Z"
+    succeeded: 1
+    terminating: 0
+    uncountedTerminatedPods: {}
+kind: List
+metadata:
+  resourceVersion: ""

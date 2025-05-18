@@ -7,7 +7,7 @@ pipeline {
         BACKEND_IMAGE = "${DOCKER_USER}/projetfilrouge_backend"
         FRONTEND_IMAGE = "${DOCKER_USER}/projetfilrouge_frontend"
         MIGRATE_IMAGE = "${DOCKER_USER}/projetfilrouge_migrate"
-        SONAR_HOST_URL = 'https://2031-41-214-74-161.ngrok-free.app'
+        SONAR_HOST_URL = 'https://5325-41-83-2-218.ngrok-free.app'
         SONAR_BACK_TOKEN = credentials('projet_fil_rouge_cred')
         SONAR_FRONT_TOKEN = credentials('projet_fil_rouge_cred')
     }
@@ -68,31 +68,23 @@ pipeline {
             }
         }
 
-        stage('Déploiement sur Kubernetes') {
+        stage('Déploiement via Terraform') {
             steps {
-                sh '''
-                    microk8s kubectl apply -f k8s/postgres-deployment.yaml
-                    microk8s kubectl apply -f k8s/backend-deployment.yaml
-                    microk8s kubectl apply -f k8s/frontend-deployment.yaml
-                '''
-            }
-        }
-
-        /*
-        stage('Déploiement local avec Docker Compose') {
-            steps {
-                sh '''
-                    docker-compose down || true
-                    docker-compose pull
-                    docker-compose up -d --build
-                '''
-            }
-        }
-        */
-
-        stage('Nettoyage K8s') {
-            steps {
-                sh 'microk8s kubectl delete -f k8s/ || true'
+                dir('terraform') {
+                    script {
+                        try {
+                            sh '''
+                                terraform init
+                                terraform plan -out=tfplan
+                                terraform apply -auto-approve tfplan
+                            '''
+                        } catch (Exception e) {
+                            echo "❌ Terraform apply a échoué. Lancement de terraform destroy..."
+                            sh 'terraform destroy -auto-approve || true'
+                            error("Terraform a échoué. Ressources détruites.")
+                        }
+                    }
+                }
             }
         }
     }
@@ -100,13 +92,18 @@ pipeline {
     post {
         success {
             mail to: 'alassanebenzecoly@gmail.com',
-                 subject: "✅ Déploiement local réussi",
+                 subject: "✅ Déploiement réussi",
                  body: "L'application a été déployée avec succès via Kubernetes."
         }
+
         failure {
+            echo 'Pipeline échoué. Tentative de nettoyage via terraform destroy...'
+            dir('terraform') {
+                sh 'terraform destroy -auto-approve || true'
+            }
             mail to: 'alassanebenzecoly@gmail.com',
                  subject: "❌ Échec du pipeline Jenkins",
-                 body: "Une erreur s’est produite, merci de vérifier Jenkins."
+                 body: "Une erreur s'est produite, terraform destroy a été lancé automatiquement."
         }
     }
 }

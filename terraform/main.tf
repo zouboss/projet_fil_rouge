@@ -4,6 +4,7 @@ variable "kubeconfig_path" {
 
 provider "kubernetes" {
   config_path = var.kubeconfig_path
+  insecure    = true
 }
 
 

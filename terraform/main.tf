@@ -1,6 +1,11 @@
-provider "kubernetes" {
-  config_path = "~/.kube/config"
+variable "kubeconfig_path" {
+  default = "/var/lib/jenkins/.kube/config"
 }
+
+provider "kubernetes" {
+  config_path = var.kubeconfig_path
+}
+
 
 # SERVICES
 resource "kubernetes_manifest" "postgres_service" {

@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: migrate
+spec:
+  template:
+    spec:
+      containers:
+      - name: migrate
+        image: zouboss/projetfilrouge_migrate:latest  # Ton image de migration
+        command: ["python", "manage.py", "migrate"]
+        env:
+        - name: DB_HOST
+          value: "postgres-service"
+        - name: DB_USER
+          value: "postgres"
+        - name: DB_PASSWORD
+          value: "zou123"
+        - name: DB_NAME
+          value: "odc_db"
+      restartPolicy: Never

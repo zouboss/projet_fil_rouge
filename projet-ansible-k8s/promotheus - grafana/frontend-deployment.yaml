@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: zouboss/projetfilrouge_frontend:latest  # Ton image Docker Hub
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80  # NGINX écoute sur 80 dans le conteneur
+        env:
+        - name: API_URL
+          value: "http://backend-service:8000"  # URL du backend
+          
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+spec:
+  selector:
+    app: frontend
+  ports:
+    - port: 80        # port exposé du service
+      targetPort: 80  # port dans le pod où nginx écoute
+      nodePort: 30083 # si tu utilises NodePort
+  type: NodePort
+

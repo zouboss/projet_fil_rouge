@@ -1,0 +1,8 @@
+- name: Déploiement Kubernetes avec Ansible
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Inclure les tâches de déploiement Kubernetes
+      include_role:
+        name: k8s_deploy
+

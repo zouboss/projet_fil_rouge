@@ -1,0 +1,25 @@
+
+- name: Appliquer le déploiement de la base de données
+  shell: microk8s.kubectl apply -f k8s/postgres-deployment.yaml
+  args:
+    chdir: "{{ playbook_dir }}"
+- name: Appliquer la migration
+  shell: microk8s.kubectl apply -f k8s/migrate-job.yaml
+  args:
+    chdir: "{{ playbook_dir }}"
+
+- name: Appliquer le backend
+  shell: microk8s.kubectl apply -f k8s/backend-deployment.yaml
+  args:
+    chdir: "{{ playbook_dir }}"
+
+- name: Appliquer le frontend
+  shell: microk8s.kubectl apply -f k8s/frontend-deployment.yaml
+  args:
+    chdir: "{{ playbook_dir }}"
+
+- name: Appliquer l'ingress
+  shell: microk8s.kubectl apply -f k8s/ingress.yaml
+  args:
+    chdir: "{{ playbook_dir }}"
+

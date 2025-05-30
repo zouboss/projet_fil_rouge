@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-rules
+  namespace: monitoring
+data:
+  alert-rules.yaml: |
+    groups:
+      - name: instance-health
+        rules:
+          - alert: BackendDown
+            expr: up{job="backend"} == 0
+            for: 1m
+            labels:
+              severity: critical
+            annotations:
+              summary: "Backend ne répond plus"
+              description: "Le backend zou.local est down depuis plus d'une minute."
+

@@ -10,7 +10,7 @@ data:
       smtp_smarthost: 'smtp.gmail.com:587'
       smtp_from: 'alassanebenzecoly@gmail.com'
       smtp_auth_username: 'alassanebenzecoly@gmail.com'
-      smtp_auth_password: 'jxvs zuji cxcy pemu'  
+      smtp_auth_password: ''  
       smtp_require_tls: true
 
     route:
